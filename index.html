@@ -1,0 +1,2421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Michael — Web Design & Development</title>
+    <meta name="description" content="Modern, fast and conversion-focused websites for restaurants, local businesses and professionals. Custom web design by Michael.">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="Michael — Web Design & Development">
+    <meta property="og:description" content="Modern websites for businesses that want a stronger online presence.">
+    <meta property="og:type" content="website">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ============================================
+           DESIGN TOKENS & RESET
+           ============================================ */
+        :root {
+            --bg: #FAFAF8;
+            --bg-elevated: #FFFFFF;
+            --text-primary: #1A1A1A;
+            --text-secondary: #6B6B6B;
+            --text-muted: #9A9A9A;
+            --accent: #C45C26;
+            --accent-hover: #A84D1F;
+            --border: #E8E6E3;
+            --border-light: #F0EEEB;
+            --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
+            --shadow-md: 0 4px 20px rgba(0,0,0,0.06);
+            --radius: 12px;
+            --radius-sm: 8px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-slow: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg);
+            color: var(--text-primary);
+            line-height: 1.6;
+            font-size: 16px;
+            overflow-x: hidden;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        button {
+            font-family: inherit;
+            cursor: pointer;
+            border: none;
+            background: none;
+        }
+
+        /* ============================================
+           UTILITY CLASSES
+           ============================================ */
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        .section-eyebrow {
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 16px;
+            display: inline-block;
+        }
+
+        .section-heading {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 700;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+            color: var(--text-primary);
+        }
+
+        .section-subheading {
+            font-size: 1.125rem;
+            color: var(--text-secondary);
+            margin-top: 16px;
+            max-width: 600px;
+            line-height: 1.7;
+        }
+
+        /* ============================================
+           NAVIGATION
+           ============================================ */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(250, 250, 248, 0.85);
+            backdrop-filter: blur(20px) saturate(1.2);
+            -webkit-backdrop-filter: blur(20px) saturate(1.2);
+            border-bottom: 1px solid transparent;
+            transition: var(--transition);
+        }
+
+        .nav.scrolled {
+            border-bottom-color: var(--border);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .nav-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 80px;
+            transition: height 0.3s ease;
+        }
+
+        .nav.scrolled .nav-inner {
+            height: 64px;
+        }
+
+        .nav-logo {
+            font-size: 1.25rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            color: var(--text-primary);
+        }
+
+        .nav-logo span {
+            font-weight: 400;
+            color: var(--text-muted);
+            margin-left: 4px;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 32px;
+        }
+
+        .nav-link {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .nav-link:hover {
+            color: var(--text-primary);
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .nav-cta {
+            background: var(--text-primary);
+            color: var(--bg);
+            padding: 10px 20px;
+            border-radius: var(--radius-sm);
+            font-size: 14px;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .nav-cta:hover {
+            background: var(--accent);
+            transform: translateY(-1px);
+        }
+
+        .nav-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            padding: 8px;
+            z-index: 1001;
+        }
+
+        .nav-toggle span {
+            display: block;
+            width: 24px;
+            height: 2px;
+            background: var(--text-primary);
+            transition: var(--transition);
+        }
+
+        .nav-toggle.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+
+        .nav-toggle.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .nav-toggle.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(5px, -5px);
+        }
+
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--bg);
+            z-index: 999;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 32px;
+        }
+
+        .mobile-menu.active {
+            display: flex;
+        }
+
+        .mobile-menu a {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .mobile-menu .nav-cta {
+            margin-top: 16px;
+            font-size: 1rem;
+            padding: 14px 32px;
+        }
+
+        /* ============================================
+           HERO SECTION
+           ============================================ */
+        .hero {
+            padding: 160px 0 80px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 64px;
+            align-items: center;
+        }
+
+        .hero-eyebrow {
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 20px;
+        }
+
+        .hero-heading {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 800;
+            line-height: 1.05;
+            letter-spacing: -0.03em;
+            color: var(--text-primary);
+        }
+
+        .hero-body {
+            font-size: 1.125rem;
+            color: var(--text-secondary);
+            margin-top: 24px;
+            max-width: 480px;
+            line-height: 1.7;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 16px;
+            margin-top: 32px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 28px;
+            border-radius: var(--radius-sm);
+            font-size: 15px;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .btn-primary {
+            background: var(--text-primary);
+            color: var(--bg);
+        }
+
+        .btn-primary:hover {
+            background: var(--accent);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--text-primary);
+            transform: translateY(-2px);
+        }
+
+        .hero-trust {
+            margin-top: 32px;
+            font-size: 13px;
+            color: var(--text-muted);
+            letter-spacing: 0.05em;
+        }
+
+        .hero-visual {
+            position: relative;
+        }
+
+        .browser-mockup {
+            background: var(--bg-elevated);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-md), 0 20px 60px rgba(0,0,0,0.08);
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+
+        .browser-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 16px;
+            background: var(--border-light);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .browser-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .browser-dot:nth-child(1) { background: #FF5F57; }
+        .browser-dot:nth-child(2) { background: #FFBD2E; }
+        .browser-dot:nth-child(3) { background: #28C840; }
+
+        .browser-address {
+            flex: 1;
+            height: 28px;
+            background: var(--bg-elevated);
+            border-radius: 6px;
+            margin-left: 12px;
+            display: flex;
+            align-items: center;
+            padding: 0 12px;
+            font-size: 12px;
+            color: var(--text-muted);
+            border: 1px solid var(--border);
+        }
+
+        .browser-content {
+            aspect-ratio: 16/10;
+            background: linear-gradient(135deg, #f5f0eb 0%, #e8e4df 50%, #ddd8d2 100%);
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .browser-content-text {
+            font-size: 14px;
+            color: var(--text-muted);
+            text-align: center;
+        }
+
+        .browser-stack {
+            position: relative;
+        }
+
+        .browser-stack .browser-mockup:nth-child(2) {
+            position: absolute;
+            top: 20px;
+            right: -30px;
+            width: 90%;
+            opacity: 0.6;
+            z-index: -1;
+            transform: scale(0.95);
+        }
+
+        .browser-stack .browser-mockup:nth-child(3) {
+            position: absolute;
+            top: 40px;
+            right: -60px;
+            width: 85%;
+            opacity: 0.3;
+            z-index: -2;
+            transform: scale(0.9);
+        }
+
+        /* ============================================
+           VALUE STRIP
+           ============================================ */
+        .value-strip {
+            padding: 32px 0;
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            background: var(--bg-elevated);
+        }
+
+        .value-grid {
+            display: flex;
+            justify-content: center;
+            gap: 48px;
+            flex-wrap: wrap;
+        }
+
+        .value-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            letter-spacing: 0.02em;
+        }
+
+        .value-icon {
+            width: 20px;
+            height: 20px;
+            color: var(--accent);
+        }
+
+        /* ============================================
+           PROBLEM / VALUE SECTION
+           ============================================ */
+        .problem-section {
+            padding: 100px 0;
+        }
+
+        .problem-header {
+            text-align: center;
+            margin-bottom: 64px;
+        }
+
+        .problem-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+        }
+
+        .problem-card {
+            padding: 40px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            background: var(--bg-elevated);
+            transition: var(--transition);
+        }
+
+        .problem-card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-4px);
+        }
+
+        .problem-number {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 16px;
+            display: block;
+        }
+
+        .problem-card h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: var(--text-primary);
+        }
+
+        .problem-card p {
+            font-size: 15px;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        .problem-icon {
+            width: 40px;
+            height: 40px;
+            margin-bottom: 20px;
+            color: var(--accent);
+            opacity: 0.8;
+        }
+
+        /* ============================================
+           PORTFOLIO SECTION
+           ============================================ */
+        .portfolio-section {
+            padding: 100px 0;
+            background: var(--bg-elevated);
+        }
+
+        .portfolio-header {
+            text-align: center;
+            margin-bottom: 64px;
+        }
+
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 32px;
+        }
+
+        .portfolio-item {
+            position: relative;
+            border-radius: var(--radius);
+            overflow: hidden;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            transition: var(--transition);
+        }
+
+        .portfolio-item.featured {
+            grid-column: 1 / -1;
+        }
+
+        .portfolio-item:hover {
+            box-shadow: var(--shadow-md);
+        }
+
+        .portfolio-image-wrap {
+            position: relative;
+            overflow: hidden;
+            aspect-ratio: 16/10;
+            background: linear-gradient(135deg, #e8e4df 0%, #ddd8d2 100%);
+        }
+
+        .portfolio-item.featured .portfolio-image-wrap {
+            aspect-ratio: 21/9;
+        }
+
+        .portfolio-image-wrap img,
+        .portfolio-placeholder {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .portfolio-item:hover .portfolio-image-wrap img,
+        .portfolio-item:hover .portfolio-placeholder {
+            transform: scale(1.03);
+        }
+
+        .portfolio-placeholder {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 12px;
+            color: var(--text-muted);
+        }
+
+        .portfolio-placeholder svg {
+            width: 48px;
+            height: 48px;
+            opacity: 0.4;
+        }
+
+        .portfolio-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 50%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .portfolio-item:hover .portfolio-overlay {
+            opacity: 1;
+        }
+
+        .portfolio-info {
+            padding: 28px;
+        }
+
+        .portfolio-meta {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 8px;
+            flex-wrap: wrap;
+        }
+
+        .portfolio-category {
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--accent);
+        }
+
+        .portfolio-badge {
+            font-size: 11px;
+            font-weight: 600;
+            padding: 4px 10px;
+            background: var(--border-light);
+            color: var(--text-muted);
+            border-radius: 4px;
+            letter-spacing: 0.05em;
+        }
+
+        .portfolio-info h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+        }
+
+        .portfolio-info p {
+            font-size: 15px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 16px;
+        }
+
+        .portfolio-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--accent);
+            transition: gap 0.3s ease;
+        }
+
+        .portfolio-link:hover {
+            gap: 10px;
+        }
+
+        /* ============================================
+           SERVICES SECTION
+           ============================================ */
+        .services-section {
+            padding: 100px 0;
+        }
+
+        .services-header {
+            text-align: center;
+            margin-bottom: 64px;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+
+        .service-card {
+            padding: 36px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            background: var(--bg-elevated);
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--accent);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+            border-radius: var(--radius) var(--radius) 0 0;
+        }
+
+        .service-card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-4px);
+        }
+
+        .service-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .service-number {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 16px;
+            display: block;
+        }
+
+        .service-card h3 {
+            font-size: 1.125rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .service-card p {
+            font-size: 15px;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        /* ============================================
+           PRICING SECTION
+           ============================================ */
+        .pricing-section {
+            padding: 100px 0;
+            background: var(--bg-elevated);
+        }
+
+        .pricing-header {
+            text-align: center;
+            margin-bottom: 64px;
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            align-items: start;
+        }
+
+        .pricing-card {
+            padding: 40px 32px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            background: var(--bg);
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .pricing-card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-4px);
+        }
+
+        .pricing-card.popular {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 1px var(--accent), var(--shadow-md);
+        }
+
+        .popular-badge {
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--accent);
+            color: white;
+            font-size: 12px;
+            font-weight: 700;
+            padding: 6px 16px;
+            border-radius: 20px;
+            letter-spacing: 0.05em;
+        }
+
+        .pricing-name {
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+        }
+
+        .pricing-price {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .pricing-desc {
+            font-size: 15px;
+            color: var(--text-secondary);
+            margin-bottom: 24px;
+            line-height: 1.6;
+        }
+
+        .pricing-features {
+            list-style: none;
+            margin-bottom: 32px;
+        }
+
+        .pricing-features li {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 8px 0;
+            font-size: 14px;
+            color: var(--text-secondary);
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .pricing-features li:last-child {
+            border-bottom: none;
+        }
+
+        .pricing-features svg {
+            width: 18px;
+            height: 18px;
+            color: var(--accent);
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .pricing-cta {
+            width: 100%;
+            text-align: center;
+            justify-content: center;
+        }
+
+        .pricing-footer {
+            text-align: center;
+            margin-top: 64px;
+            padding: 40px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            background: var(--bg);
+        }
+
+        .pricing-footer h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .pricing-footer p {
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+        }
+
+        /* ============================================
+           PROCESS SECTION
+           ============================================ */
+        .process-section {
+            padding: 100px 0;
+        }
+
+        .process-header {
+            text-align: center;
+            margin-bottom: 64px;
+        }
+
+        .process-timeline {
+            position: relative;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .process-timeline::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 2px;
+            height: 100%;
+            background: var(--border);
+        }
+
+        .process-step {
+            display: flex;
+            align-items: flex-start;
+            gap: 48px;
+            margin-bottom: 64px;
+            position: relative;
+        }
+
+        .process-step:last-child {
+            margin-bottom: 0;
+        }
+
+        .process-step:nth-child(even) {
+            flex-direction: row-reverse;
+        }
+
+        .process-step-content {
+            flex: 1;
+            padding: 32px;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+        }
+
+        .process-step-number {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--accent);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 16px;
+            flex-shrink: 0;
+            position: relative;
+            z-index: 2;
+        }
+
+        .process-step h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .process-step p {
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        /* ============================================
+           ABOUT SECTION
+           ============================================ */
+        .about-section {
+            padding: 100px 0;
+            background: var(--bg-elevated);
+        }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+        }
+
+        .about-image {
+            aspect-ratio: 4/5;
+            background: linear-gradient(135deg, #e8e4df 0%, #ddd8d2 50%, #d0cbc5 100%);
+            border-radius: var(--radius);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .about-image-placeholder {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 16px;
+            color: var(--text-muted);
+        }
+
+        .about-image-placeholder svg {
+            width: 64px;
+            height: 64px;
+            opacity: 0.3;
+        }
+
+        .about-text p {
+            font-size: 1.0625rem;
+            color: var(--text-secondary);
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+
+        /* ============================================
+           WHY SECTION
+           ============================================ */
+        .why-section {
+            padding: 100px 0;
+        }
+
+        .why-header {
+            text-align: center;
+            margin-bottom: 64px;
+        }
+
+        .why-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+        }
+
+        .why-card {
+            text-align: center;
+            padding: 40px 24px;
+        }
+
+        .why-icon {
+            width: 48px;
+            height: 48px;
+            margin: 0 auto 20px;
+            color: var(--accent);
+        }
+
+        .why-card h3 {
+            font-size: 1.125rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .why-card p {
+            font-size: 15px;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        /* ============================================
+           FAQ SECTION
+           ============================================ */
+        .faq-section {
+            padding: 100px 0;
+            background: var(--bg-elevated);
+        }
+
+        .faq-header {
+            text-align: center;
+            margin-bottom: 64px;
+        }
+
+        .faq-list {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .faq-item {
+            border-bottom: 1px solid var(--border);
+        }
+
+        .faq-question {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 24px 0;
+            font-size: 1.0625rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            text-align: left;
+            transition: color 0.3s ease;
+        }
+
+        .faq-question:hover {
+            color: var(--accent);
+        }
+
+        .faq-question svg {
+            width: 20px;
+            height: 20px;
+            transition: transform 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .faq-item.active .faq-question svg {
+            transform: rotate(180deg);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease, padding 0.4s ease;
+        }
+
+        .faq-item.active .faq-answer {
+            max-height: 300px;
+            padding-bottom: 24px;
+        }
+
+        .faq-answer p {
+            color: var(--text-secondary);
+            line-height: 1.7;
+            font-size: 15px;
+        }
+
+        /* ============================================
+           CTA SECTION
+           ============================================ */
+        .cta-section {
+            padding: 140px 0;
+            position: relative;
+            overflow: hidden;
+            background: var(--text-primary);
+            color: var(--bg);
+        }
+
+        .cta-bg-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: clamp(8rem, 20vw, 20rem);
+            font-weight: 800;
+            color: rgba(255,255,255,0.03);
+            white-space: nowrap;
+            pointer-events: none;
+            user-select: none;
+        }
+
+        .cta-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .cta-content h2 {
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 800;
+            margin-bottom: 16px;
+            color: var(--bg);
+        }
+
+        .cta-content p {
+            font-size: 1.125rem;
+            color: rgba(255,255,255,0.7);
+            margin-bottom: 32px;
+            line-height: 1.7;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-light {
+            background: var(--bg);
+            color: var(--text-primary);
+        }
+
+        .btn-light:hover {
+            background: var(--accent);
+            color: white;
+        }
+
+        .btn-outline-light {
+            background: transparent;
+            color: var(--bg);
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        .btn-outline-light:hover {
+            border-color: var(--bg);
+            background: rgba(255,255,255,0.1);
+        }
+
+        /* ============================================
+           CONTACT SECTION
+           ============================================ */
+        .contact-section {
+            padding: 100px 0;
+        }
+
+        .contact-header {
+            text-align: center;
+            margin-bottom: 64px;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 64px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .form-input,
+        .form-select,
+        .form-textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-family: inherit;
+            font-size: 15px;
+            color: var(--text-primary);
+            background: var(--bg-elevated);
+            transition: var(--transition);
+        }
+
+        .form-input:focus,
+        .form-select:focus,
+        .form-textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(196, 92, 38, 0.1);
+        }
+
+        .form-textarea {
+            min-height: 140px;
+            resize: vertical;
+        }
+
+        .contact-alt {
+            padding: 40px;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            height: fit-content;
+        }
+
+        .contact-alt h3 {
+            font-size: 1.125rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .contact-alt p {
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+            font-size: 15px;
+        }
+
+        .contact-email {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--accent);
+            transition: var(--transition);
+        }
+
+        .contact-email:hover {
+            color: var(--accent-hover);
+        }
+
+        .form-note {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-top: 16px;
+            padding: 12px;
+            background: var(--border-light);
+            border-radius: var(--radius-sm);
+            line-height: 1.6;
+        }
+
+        /* ============================================
+           FOOTER
+           ============================================ */
+        .footer {
+            padding: 60px 0 32px;
+            border-top: 1px solid var(--border);
+            background: var(--bg-elevated);
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 48px;
+            margin-bottom: 48px;
+        }
+
+        .footer-brand {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .footer-tagline {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .footer-col h4 {
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: var(--text-primary);
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+
+        .footer-links a {
+            font-size: 14px;
+            color: var(--text-secondary);
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent);
+        }
+
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 24px;
+            border-top: 1px solid var(--border);
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .footer-copyright {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .footer-socials {
+            display: flex;
+            gap: 16px;
+        }
+
+        .footer-socials a {
+            font-size: 14px;
+            color: var(--text-secondary);
+            transition: color 0.3s ease;
+        }
+
+        .footer-socials a:hover {
+            color: var(--accent);
+        }
+
+        /* ============================================
+           ANIMATIONS
+           ============================================ */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ============================================
+           RESPONSIVE
+           ============================================ */
+        @media (max-width: 1024px) {
+            .hero-grid {
+                grid-template-columns: 1fr;
+                gap: 48px;
+            }
+
+            .hero-visual {
+                order: -1;
+            }
+
+            .browser-stack .browser-mockup:nth-child(2),
+            .browser-stack .browser-mockup:nth-child(3) {
+                display: none;
+            }
+
+            .about-grid {
+                grid-template-columns: 1fr;
+                gap: 48px;
+            }
+
+            .about-image {
+                max-width: 400px;
+                margin: 0 auto;
+                width: 100%;
+            }
+
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .nav-toggle {
+                display: flex;
+            }
+
+            .problem-grid,
+            .services-grid,
+            .why-grid,
+            .pricing-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .portfolio-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .process-timeline::before {
+                left: 24px;
+            }
+
+            .process-step,
+            .process-step:nth-child(even) {
+                flex-direction: column;
+                padding-left: 56px;
+            }
+
+            .process-step-number {
+                position: absolute;
+                left: 0;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr;
+                gap: 32px;
+            }
+
+            .hero {
+                padding: 120px 0 60px;
+            }
+
+            .value-grid {
+                gap: 24px;
+            }
+
+            .cta-section {
+                padding: 100px 0;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 0 16px;
+            }
+
+            .hero-heading {
+                font-size: 2rem;
+            }
+
+            .section-heading {
+                font-size: 1.75rem;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+            }
+
+            .pricing-card.popular {
+                order: -1;
+            }
+        }
+
+        /* Reduced motion */
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+
+            html {
+                scroll-behavior: auto;
+            }
+
+            .reveal {
+                opacity: 1;
+                transform: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ============================================
+         NAVIGATION
+         ============================================ -->
+    <nav class="nav" id="nav">
+        <div class="container">
+            <div class="nav-inner">
+                <a href="#" class="nav-logo">MICHAEL<span>Web Design</span></a>
+                
+                <div class="nav-links">
+                    <a href="#work" class="nav-link">Work</a>
+                    <a href="#services" class="nav-link">Services</a>
+                    <a href="#pricing" class="nav-link">Pricing</a>
+                    <a href="#process" class="nav-link">Process</a>
+                    <a href="#about" class="nav-link">About</a>
+                    <a href="#faq" class="nav-link">FAQ</a>
+                    <a href="#contact" class="nav-link">Contact</a>
+                    <a href="#contact" class="nav-cta">Start a project</a>
+                </div>
+
+                <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="#work" class="mobile-link">Work</a>
+        <a href="#services" class="mobile-link">Services</a>
+        <a href="#pricing" class="mobile-link">Pricing</a>
+        <a href="#process" class="mobile-link">Process</a>
+        <a href="#about" class="mobile-link">About</a>
+        <a href="#faq" class="mobile-link">FAQ</a>
+        <a href="#contact" class="mobile-link">Contact</a>
+        <a href="#contact" class="nav-cta">Start a project</a>
+    </div>
+
+    <!-- ============================================
+         HERO SECTION
+         ============================================ -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-grid">
+                <div class="hero-content">
+                    <p class="hero-eyebrow">Web Design & Development</p>
+                    <h1 class="hero-heading">Websites that make your business stand out.</h1>
+                    <p class="hero-body">Modern, fast and conversion-focused websites for businesses that want a stronger online presence. I create custom websites designed around your business, your customers and your goals.</p>
+                    
+                    <div class="hero-buttons">
+                        <a href="#work" class="btn btn-primary">
+                            View my work
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+                        </a>
+                        <a href="#contact" class="btn btn-secondary">Start a project</a>
+                    </div>
+
+                    <p class="hero-trust">Modern design · Mobile-first · Fast delivery</p>
+                </div>
+
+                <div class="hero-visual">
+                    <div class="browser-stack">
+                        <div class="browser-mockup">
+                            <div class="browser-header">
+                                <div class="browser-dot"></div>
+                                <div class="browser-dot"></div>
+                                <div class="browser-dot"></div>
+                                <div class="browser-address">rionexivbistrot.com</div>
+                            </div>
+                            <div class="browser-content">
+                                <div class="browser-content-text">
+                                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.4"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+                                    <p style="margin-top: 12px;">Restaurant Website Preview</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="browser-mockup">
+                            <div class="browser-header">
+                                <div class="browser-dot"></div>
+                                <div class="browser-dot"></div>
+                                <div class="browser-dot"></div>
+                                <div class="browser-address">localbusiness.com</div>
+                            </div>
+                            <div class="browser-content">
+                                <div class="browser-content-text">
+                                    <p>Local Business Website Preview</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="browser-mockup">
+                            <div class="browser-header">
+                                <div class="browser-dot"></div>
+                                <div class="browser-dot"></div>
+                                <div class="browser-dot"></div>
+                                <div class="browser-address">salon-beauty.com</div>
+                            </div>
+                            <div class="browser-content">
+                                <div class="browser-content-text">
+                                    <p>Beauty Salon Website Preview</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================
+         VALUE STRIP
+         ============================================ -->
+    <section class="value-strip">
+        <div class="container">
+            <div class="value-grid">
+                <div class="value-item">
+                    <svg class="value-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M12 18h.01"/></svg>
+                    Responsive
+                </div>
+                <div class="value-item">
+                    <svg class="value-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                    Fast
+                </div>
+                <div class="value-item">
+                    <svg class="value-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+                    SEO-ready
+                </div>
+                <div class="value-item">
+                    <svg class="value-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="M2 2l7.586 7.586"/><circle cx="11" cy="11" r="2"/></svg>
+                    Custom design
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================
+         PROBLEM / VALUE SECTION
+         ============================================ -->
+    <section class="problem-section" id="value">
+        <div class="container">
+            <div class="problem-header reveal">
+                <span class="section-eyebrow">Why it matters</span>
+                <h2 class="section-heading">Your website is often your first impression.</h2>
+                <p class="section-subheading">Before contacting your business, potential customers will often look you up online. A modern, clear and trustworthy website can turn that first visit into a real customer.</p>
+            </div>
+
+            <div class="problem-grid">
+                <div class="problem-card reveal">
+                    <svg class="problem-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                    <span class="problem-number">01</span>
+                    <h3>Look professional</h3>
+                    <p>Build trust from the first impression with a polished online presence.</p>
+                </div>
+
+                <div class="problem-card reveal">
+                    <svg class="problem-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                    <span class="problem-number">02</span>
+                    <h3>Reach customers everywhere</h3>
+                    <p>Give your customers a fast and seamless experience on phones, tablets and desktops.</p>
+                </div>
+
+                <div class="problem-card reveal">
+                    <svg class="problem-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                    <span class="problem-number">03</span>
+                    <h3>Make it easy to take action</h3>
+                    <p>Make important information, contact details and calls to action easy to find.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================
+         PORTFOLIO SECTION
+         ============================================ -->
+    <section class="portfolio-section" id="work">
+        <div class="container">
+            <div class="portfolio-header reveal">
+                <span class="section-eyebrow">Selected Work</span>
+                <h2 class="section-heading">Websites designed to be remembered.</h2>
+                <p class="section-subheading">Here are some of the concepts and projects I've created for different types of businesses.</p>
+            </div>
+
+            <div class="portfolio-grid">
+                <!-- Featured Project -->
+                <div class="portfolio-item featured reveal">
+                    <div class="portfolio-image-wrap">
+                        <div class="portfolio-placeholder">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+                            <span>Website preview placeholder</span>
+                        </div>
+                        <div class="portfolio-overlay"></div>
+                    </div>
+                    <div class="portfolio-info">
+                        <div class="portfolio-meta">
+                            <span class="portfolio-category">Restaurant · Website Concept</span>
+                            <span class="portfolio-badge">Concept / Demo</span>
+                        </div>
+                        <h3>Rione XIV Bistrot</h3>
+                        <p>A modern digital experience designed for a Roman bistrot, focused on food, atmosphere and easy reservations.</p>
+                        <a href="#" class="portfolio-link" onclick="event.preventDefault(); alert('Project page coming soon');">
+                            View project
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Project 02 -->
+                <div class="portfolio-item reveal">
+                    <div class="portfolio-image-wrap">
+                        <div class="portfolio-placeholder">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+                            <span>Website preview placeholder</span>
+                        </div>
+                        <div class="portfolio-overlay"></div>
+                    </div>
+                    <div class="portfolio-info">
+                        <div class="portfolio-meta">
+                            <span class="portfolio-category">Restaurant · Concept</span>
+                            <span class="portfolio-badge">Concept / Demo</span>
+                        </div>
+                        <h3>Restaurant Website</h3>
+                        <p>A clean and inviting website concept for a modern dining experience.</p>
+                        <a href="#" class="portfolio-link" onclick="event.preventDefault(); alert('Project page coming soon');">
+                            View project
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Project 03 -->
+                <div class="portfolio-item reveal">
+                    <div class="portfolio-image-wrap">
+                        <div class="portfolio-placeholder">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+                            <span>Website preview placeholder</span>
+                        </div>
+                        <div class="portfolio-overlay"></div>
+                    </div>
+                    <div class="portfolio-info">
+                        <div class="portfolio-meta">
+                            <span class="portfolio-category">Local Business · Concept</span>
+                            <span class="portfolio-badge">Concept / Demo</span>
+                        </div>
+                        <h3>Local Business Website</h3>
+                        <p>A professional website concept for a local service business.</p>
+                        <a href="#" class="portfolio-link" onclick="event.preventDefault(); alert('Project page coming soon');">
+                            View project
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================
+         SERVICES SECTION
+         ============================================ -->
+    <section class="services-section" id="services">
+        <div class="container">
+            <div class="services-header reveal">
+                <span class="section-eyebrow">What I Do</span>
+                <h2 class="section-heading">Everything you need for a stronger online presence.</h2>
+            </div>
+
+            <div class="services-grid">
+                <div class="service-card reveal">
+                    <span class="service-number">01</span>
+                    <h3>Custom Websites</h3>
+                    <p>Modern websites designed around your business rather than generic templates.</p>
+                </div>
+
+                <div class="service-card reveal">
+                    <span class="service-number">02</span>
+                    <h3>Responsive Design</h3>
+                    <p>Every page is optimized for smartphones, tablets and desktop screens.</p>
+                </div>
+
+                <div class="service-card reveal">
+                    <span class="service-number">03</span>
+                    <h3>Landing Pages</h3>
+                    <p>Focused pages designed to present your business clearly and turn visitors into enquiries.</p>
+                </div>
+
+                <div class="service-card reveal">
+                    <span class="service-number">04</span>
+                    <h3>SEO Foundations</h3>
+                    <p>Clean structure and essential on-page SEO foundations to help search engines understand your website.</p>
+                </div>
+
+                <div class="service-card reveal">
+                    <span class="service-number">05</span>
+                    <h3>Website Launch</h3>
+                    <p>I can help with domain setup, hosting configuration and getting your website online.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================
+         PRICING SECTION
+         ============================================ -->
+    <section class="pricing-section" id="pricing">
+        <div class="container">
+            <div class="pricing-header reveal">
+                <span class="section-eyebrow">Pricing</span>
+                <h2 class="section-heading">Simple packages. Clear pricing.</h2>
+                <p class="section-subheading">Choose the starting point that fits your business. Every project can be customized.</p>
+            </div>
+
+            <div class="pricing-grid">
+                <!-- Starter -->
+                <div class="pricing-card reveal">
+                    <div class="pricing-name">Starter</div>
+                    <div class="pricing-price">€299</div>
+                    <p class="pricing-desc">For businesses that need a clean and professional online presence.</p>
+                    <ul class="pricing-features">
+                        <li>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                            One-page website
+                        </li>
+                        <li>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                            Responsive design
+                        </li>
+                        <li>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                            Business information
+                        </li>
+                        <li>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                            Contact section
+                        </li>
+                        <li>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                            Google Maps integration
+                        </li>
+                        <li>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                            Social media links
+                        </li>
+                        <li>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                            1 revision
+                        </li>
+                    </ul>
+                    <a href="#contact" class="btn btn-secondary pricing-cta">Choose Starter →</a>
+                </div>
+
+                <!-- Business -->
+                <div class="pricing-card popular reveal">
+                    <div class="popular-badge">Most popular</div>
+                    <div class="pricing-name">Business</div>
+                    <div class="pricing-price">€399</div>
+                    <p class="pricing-desc">For businesses that want a complete professional website.</p>
+                    <ul class="pricing-features">
+                        <li>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                            Up to 5 pages
+                        </li>
+                        <li>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                            Custom design
+                        </li>
+                        <li>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                            Services / menu section
+                        </li>
+                        <li>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                            Photo gallery
+                        </li>
+                        <li>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                            Contact form
+                        </li>
+                        <li>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                            Google Maps
+                        </li>
+                        <li>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                            Social media integration
+                        </li>
+                        <li>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                            Mobile optimization
+                        </li>
+                        <li>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                            2 revisions
+                        </li>
+                    </ul>
+                    <a href="#contact" class="btn btn-primary pricing-cta">Choose Business →</a>
+                </div>
+
+                <!-- Premium -->
+                <div class="pricing-card reveal">
+                    <div class="pricing-name">Premium</div>
+                    <div class="pricing-price">€599</div>
+                    <p class="pricing-desc">For businesses that want a more complete and customized website.</p>
+                    <ul class="pricing-features">
+                        <li>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                            Up to 7 pages
+                        </li>
+                        <li>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                            Fully customized design
+                        </li>
+                        <li>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                            Advanced gallery
+                        </li>
+                        <li>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                            SEO foundations
+                        </li>
+                        <li>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                            Subtle animations
+                        </li>
+                        <li>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                            Booking integration placeholder
+                        </li>
+                        <li>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                            3 revisions
+                        </li>
+                        <li>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                            Website launch assistance
+                        </li>
+                    </ul>
+                    <a href="#contact" class="btn btn-secondary pricing-cta">Choose Premium →</a>
+                </div>
+            </div>
+
+            <div class="pricing-footer reveal">
+                <h3>Need something different?</h3>
+                <p>Every business is different. If you need a custom solution, get in touch and I'll prepare a tailored quote.</p>
+                <a href="#contact" class="btn btn-primary">
+                    Request a quote
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================
+         PROCESS SECTION
+         ============================================ -->
+    <section class="process-section" id="process">
+        <div class="container">
+            <div class="process-header reveal">
+                <span class="section-eyebrow">How It Works</span>
+                <h2 class="section-heading">From idea to online in four steps.</h2>
+            </div>
+
+            <div class="process-timeline">
+                <div class="process-step reveal">
+                    <div class="process-step-number">01</div>
+                    <div class="process-step-content">
+                        <h3>Tell me about your business</h3>
+                        <p>Send me a few details about your business, your goals and the website you have in mind.</p>
+                    </div>
+                </div>
+
+                <div class="process-step reveal">
+                    <div class="process-step-number">02</div>
+                    <div class="process-step-content">
+                        <h3>Design</h3>
+                        <p>I create the structure and visual direction of your website.</p>
+                    </div>
+                </div>
+
+                <div class="process-step reveal">
+                    <div class="process-step-number">03</div>
+                    <div class="process-step-content">
+                        <h3>Refine</h3>
+                        <p>You review the first version and I make the agreed revisions.</p>
+                    </div>
+                </div>
+
+                <div class="process-step reveal">
+                    <div class="process-step-number">04</div>
+                    <div class="process-step-content">
+                        <h3>Launch</h3>
+                        <p>Once everything is approved, the website is prepared for launch.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================
+         ABOUT SECTION
+         ============================================ -->
+    <section class="about-section" id="about">
+        <div class="container">
+            <div class="about-grid">
+                <div class="about-image reveal">
+                    <div class="about-image-placeholder">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="12" cy="12" r="4"/><path d="M12 8v8M8 12h8"/></svg>
+                        <span>Portrait placeholder</span>
+                    </div>
+                </div>
+
+                <div class="about-text reveal">
+                    <span class="section-eyebrow">About</span>
+                    <h2 class="section-heading" style="margin-bottom: 24px;">Hi, I'm Michael.</h2>
+                    <p>I'm a freelance web designer focused on creating modern and effective websites for businesses and professionals.</p>
+                    <p>I combine modern design, responsive development and efficient tools to create websites that look professional without unnecessary complexity.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================
+         WHY SECTION
+         ============================================ -->
+    <section class="why-section" id="why">
+        <div class="container">
+            <div class="why-header reveal">
+                <h2 class="section-heading">Small studio. Personal attention.</h2>
+            </div>
+
+            <div class="why-grid">
+                <div class="why-card reveal">
+                    <svg class="why-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                    <h3>Direct communication</h3>
+                    <p>You work directly with me throughout the project.</p>
+                </div>
+
+                <div class="why-card reveal">
+                    <svg class="why-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                    <h3>Focused on your business</h3>
+                    <p>The website is designed around your customers and your goals.</p>
+                </div>
+
+                <div class="why-card reveal">
+                    <svg class="why-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                    <h3>Fast and efficient</h3>
+                    <p>A streamlined process keeps projects simple and efficient.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================
+         FAQ SECTION
+         ============================================ -->
+    <section class="faq-section" id="faq">
+        <div class="container">
+            <div class="faq-header reveal">
+                <h2 class="section-heading">Frequently asked questions</h2>
+            </div>
+
+            <div class="faq-list">
+                <div class="faq-item reveal">
+                    <button class="faq-question">
+                        How long does a website take?
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Most projects take around 5–7 days depending on complexity, content availability and the number of revisions.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item reveal">
+                    <button class="faq-question">
+                        Does the price include the domain?
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Domain and hosting costs depend on the project and are discussed before the website is launched.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item reveal">
+                    <button class="faq-question">
+                        Will the website work on mobile?
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Yes. Every website is designed to work properly across smartphones, tablets and desktop computers.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item reveal">
+                    <button class="faq-question">
+                        Can I request changes?
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Yes. Each package includes a defined number of revisions. Additional changes can be discussed if needed.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item reveal">
+                    <button class="faq-question">
+                        Do you provide website maintenance?
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Yes. Ongoing updates and maintenance can be arranged separately.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item reveal">
+                    <button class="faq-question">
+                        How do I start a project?
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Send me a message through the contact form or email and tell me a little about your business and what you need.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================
+         CTA SECTION
+         ============================================ -->
+    <section class="cta-section">
+        <div class="cta-bg-text">LET'S TALK</div>
+        <div class="container">
+            <div class="cta-content reveal">
+                <h2>Ready to build something better?</h2>
+                <p>Tell me about your business and let's create a website that represents it properly.</p>
+                <div class="cta-buttons">
+                    <a href="#contact" class="btn btn-light">
+                        Start a project
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+                    </a>
+                    <a href="#work" class="btn btn-outline-light">View my work</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================
+         CONTACT SECTION
+         ============================================ -->
+    <section class="contact-section" id="contact">
+        <div class="container">
+            <div class="contact-header reveal">
+                <span class="section-eyebrow">Contact</span>
+                <h2 class="section-heading">Let's talk about your project.</h2>
+            </div>
+
+            <div class="contact-grid">
+                <form class="contact-form reveal" id="contactForm" onsubmit="event.preventDefault(); handleFormSubmit();">
+                    <div class="form-group">
+                        <label class="form-label" for="name">Name</label>
+                        <input type="text" id="name" class="form-input" placeholder="Your name" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="business">Business name</label>
+                        <input type="text" id="business" class="form-input" placeholder="Your business name">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="email">Email</label>
+                        <input type="email" id="email" class="form-input" placeholder="your@email.com" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="website">Website (optional)</label>
+                        <input type="url" id="website" class="form-input" placeholder="https://yourwebsite.com">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="need">What do you need?</label>
+                        <select id="need" class="form-select" required>
+                            <option value="" disabled selected>Select an option</option>
+                            <option value="new-website">New website</option>
+                            <option value="redesign">Website redesign</option>
+                            <option value="landing-page">Landing page</option>
+                            <option value="maintenance">Website maintenance</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="budget">Budget</label>
+                        <select id="budget" class="form-select">
+                            <option value="" disabled selected>Select a range</option>
+                            <option value="under-300">Under €300</option>
+                            <option value="300-500">€300–€500</option>
+                            <option value="500-1000">€500–€1,000</option>
+                            <option value="1000-plus">€1,000+</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="message">Message</label>
+                        <textarea id="message" class="form-textarea" placeholder="Tell me about your project..." required></textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">
+                        Send enquiry
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+                    </button>
+
+                    <div class="form-note">
+                        <strong>Note:</strong> This form is a placeholder. To make it functional, connect a backend service (e.g., Formspree, Getform, or a custom API). For now, clicking "Send enquiry" will open your email client as a fallback.
+                    </div>
+                </form>
+
+                <div class="contact-alt reveal">
+                    <h3>Prefer email?</h3>
+                    <p>You can also reach me directly at:</p>
+                    <a href="mailto:your@email.com" class="contact-email">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                        your@email.com
+                    </a>
+                    <p style="margin-top: 16px; font-size: 13px; color: var(--text-muted);">Replace this with your real email address before publishing.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================
+         FOOTER
+         ============================================ -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <div class="footer-brand">MICHAEL</div>
+                    <div class="footer-tagline">Web Design & Development</div>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Navigation</h4>
+                    <ul class="footer-links">
+                        <li><a href="#work">Work</a></li>
+                        <li><a href="#services">Services</a></li>
+                        <li><a href="#pricing">Pricing</a></li>
+                        <li><a href="#about">About</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Social</h4>
+                    <ul class="footer-links">
+                        <li><a href="https://instagram.com" target="_blank" rel="noopener">Instagram</a></li>
+                        <li><a href="https://linkedin.com" target="_blank" rel="noopener">LinkedIn</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Contact</h4>
+                    <ul class="footer-links">
+                        <li><a href="mailto:your@email.com">your@email.com</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <div class="footer-copyright">© 2026 Michael. All rights reserved.</div>
+                <div class="footer-socials">
+                    <a href="https://instagram.com" target="_blank" rel="noopener">Instagram</a>
+                    <a href="https://linkedin.com" target="_blank" rel="noopener">LinkedIn</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ============================================
+         JAVASCRIPT
+         ============================================ -->
+    <script>
+        // Mobile menu toggle
+        const navToggle = document.getElementById('navToggle');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const mobileLinks = document.querySelectorAll('.mobile-link');
+
+        navToggle.addEventListener('click', () => {
+            navToggle.classList.toggle('active');
+            mobileMenu.classList.toggle('active');
+            document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : '';
+        });
+
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                navToggle.classList.remove('active');
+                mobileMenu.classList.remove('active');
+                document.body.style.overflow = '';
+            });
+        });
+
+        // Sticky nav on scroll
+        const nav = document.getElementById('nav');
+        let lastScroll = 0;
+
+        window.addEventListener('scroll', () => {
+            const currentScroll = window.pageYOffset;
+            
+            if (currentScroll > 50) {
+                nav.classList.add('scrolled');
+            } else {
+                nav.classList.remove('scrolled');
+            }
+            
+            lastScroll = currentScroll;
+        });
+
+        // Reveal on scroll
+        const revealElements = document.querySelectorAll('.reveal');
+        
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    revealObserver.unobserve(entry.target);
+                }
+            });
+        }, {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        });
+
+        revealElements.forEach(el => revealObserver.observe(el));
+
+        // FAQ Accordion
+        const faqItems = document.querySelectorAll('.faq-item');
+
+        faqItems.forEach(item => {
+            const question = item.querySelector('.faq-question');
+            question.addEventListener('click', () => {
+                const isActive = item.classList.contains('active');
+                
+                // Close all
+                faqItems.forEach(i => i.classList.remove('active'));
+                
+                // Open clicked if it wasn't active
+                if (!isActive) {
+                    item.classList.add('active');
+                }
+            });
+        });
+
+        // Form handling
+        function handleFormSubmit() {
+            const name = document.getElementById('name').value;
+            const business = document.getElementById('business').value;
+            const email = document.getElementById('email').value;
+            const website = document.getElementById('website').value;
+            const need = document.getElementById('need').value;
+            const budget = document.getElementById('budget').value;
+            const message = document.getElementById('message').value;
+
+            // Build mailto link as fallback
+            const subject = encodeURIComponent(`Website enquiry from ${name}`);
+            const body = encodeURIComponent(
+                `Name: ${name}\n` +
+                `Business: ${business || 'N/A'}\n` +
+                `Email: ${email}\n` +
+                `Website: ${website || 'N/A'}\n` +
+                `Need: ${need}\n` +
+                `Budget: ${budget || 'N/A'}\n\n` +
+                `Message:\n${message}`
+            );
+
+            window.location.href = `mailto:your@email.com?subject=${subject}&body=${body}`;
+        }
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    const offset = 80;
+                    const targetPosition = target.getBoundingClientRect().top + window.pageYOffset - offset;
+                    window.scrollTo({
+                        top: targetPosition,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
